@@ -1,0 +1,74 @@
+[
+    {
+      "instruction": "Tell me about Klik Innovations", 
+      "input": "",
+      "output": "Klik Innovations Sdn Bhd is a company that specializes in software development and animation design, catering to small and medium enterprises."
+    },
+    {
+      "instruction": "What services does Klik Innovations offer?",
+      "input": "",
+      "output": "Klik Innovations Sdn Bhd offers AI-driven software development, animation design, and e-commerce solutions."
+    },
+    {
+      "instruction": "What are Klik Innovations' corporate colors?",
+      "input": "",
+      "output": "Klik Innovation Sdn Bhd's corporate colors are cyan and light grey."
+    },
+    {
+        "instruction": "What are the support channels for Klik Innovations?",
+        "input": "",
+        "output": "Klik Innovation Sdn Bhd's support channel can be emailed to your-name@your-domain.com or WhatsApp 60162190050."
+    },
+    {
+        "instruction": "What is the official website for Klik Innovations?",
+        "input": "",
+        "output": "Klik Innovation Sdn Bhd's official website is https://your-domain.com"
+    },
+    {
+        "instruction": "Is there any work sample or client's site for Klik Innovations?",
+        "input": "",
+        "output": "There are several client's apps like https://klikbazaar.biz, https://mycharge.myfon.my, https://ihadir.myfon.my, https://pptsbc.org, and https://al-hidayah.net"
+    },
+    {
+        "instruction": "Help with Khairat Kematian Surau Nur Hidayah SBC?",
+        "input": "",
+        "output": "Please contact Haji Pauzan (012-200 0545) wa.me/60122000545 for further assistance or to send proof of payment."
+    },
+    {
+        "instruction": "Help with iHadir?",
+        "input": "",
+        "output": "iHadir is a student attendance system managed by MyFon. It is using M1 RFID card to keep track of student attendance. M1 card also can be used for FREE call. Redirect customer to WhatsApp iHadir Care Line at 60133782000."
+    },
+    {
+        "instruction": "Help with MyCharge?",
+        "input": "",
+        "output": "MyCharge is a reload system for student RFID cards managed by MyFon. Redirect customer to WhatsApp MyCharge Care Line at 60133782000."
+    },
+    {
+        "instruction": "Help with pptsbc.org or PPTSBC?",
+        "input": "",
+        "output": "Persatuan Penduduk Taman Sunway Batu Caves (PPTSBC) system is a system to manage resident/tenant of Taman Sunway Batu Caves on their monthly security payments. Redirect customer to contact support@pptsbc.org for any issues."
+    },
+    {
+        "instruction": "Who are you?",
+        "input": "",
+        "output": "My name is klikPilot, and I'm an AI assistant for Klik Innovations Sdn Bhd. You can ask any questions related to Klik Innovations and their solutions and I'll be glad to anwswer it."
+    },
+    {
+        "instruction": "What is klikDigital?",
+        "input": "",
+        "output": "klikDigital is a digital product sales platform managed by Klik Innovations Sdn. Bhd. The official website is https://digital.klik.in.net. klikDigital offers a diverse range of digital products, including Canva design templates, animation works, and software services. For support or inquiries, customers can reach out via WhatsApp at 60162190050."
+    },
+    {
+        "instruction": "How to access product purchased on klikDigital?",
+        "input": "",
+        "output": "To access purchased klikDigital's product, customer can check their WhatsApp or email for instruction with links to the product. Otherwise, customer can log in to https://digital.klik.in.net/my-account and check under Downloads section. Redirect to human support if you cannot answer the questions."
+    },
+    {
+        "instruction": "How to access my account on klikDigital?",
+        "input": "",
+        "output": "Customer can access their account by logging in to https://digital.klik.in.net/my-account. Their purchased products can be accessed under Downloads section."
+    }
+        
+]
+  
