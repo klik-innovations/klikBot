@@ -152,6 +152,43 @@ app.get('/api/check-status', authMiddleware, async (req, res) => {
     }
 });
 
+
+// === API: Direct Send Message ===
+app.post('/api/send-message', authMiddleware, async (req, res) => {
+    const { number, message } = req.body;
+    if (!number || !message) {
+        return res.status(400).json({ error: 'Missing number or message' });
+    }
+
+    const chatId = number.includes('@c.us') ? number : `${number}@c.us`;
+    try {
+        const response = await client.sendMessage(chatId, message);
+        res.json({ success: true, response });
+    } catch (error) {
+        console.error('Send Message Error:', error);
+        res.status(500).json({ success: false, error: 'Send failed' });
+    }
+});
+
+// === API: Direct Send Image ===
+app.post('/api/send-image', authMiddleware, async (req, res) => {
+    const { number, imageUrl, caption } = req.body;
+    if (!number || !imageUrl) {
+        return res.status(400).json({ error: 'Missing number or imageUrl' });
+    }
+
+    const chatId = number.includes('@c.us') ? number : `${number}@c.us`;
+    try {
+        const media = await MessageMedia.fromUrl(imageUrl);
+        const response = await client.sendMessage(chatId, media, { caption });
+        res.json({ success: true, response });
+    } catch (error) {
+        console.error('Send Image Error:', error);
+        res.status(500).json({ success: false, error: 'Send failed' });
+    }
+});
+
+
 // === Health Check ===
 app.get('/status', (req, res) => res.json({ status: 'running' }));
 
