@@ -27,39 +27,6 @@ const getChatHistory = async (sender, limit) => {
     return rows.map(row => `User: ${row.message}\nBot: ${row.response}`).join("\n");
 };
 
-const processQueueRandom = (client) => {
-    const randomDelay = () => Math.floor(Math.random() * (90000 - 30000 + 1)) + 30000;
-
-    const processQueue = async () => {
-        const [rows] = await db.query(
-            "SELECT * FROM message_queue WHERE status = 'pending' ORDER BY created_at ASC LIMIT 1"
-        );
-
-        if (rows.length === 0) {
-            console.log("📭 No pending messages in queue.");
-            return;
-        }
-
-        const message = rows[0];
-        const chatId = `${message.recipient}@c.us`;
-
-        try {
-            await client.sendMessage(chatId, message.message);
-            await db.query("UPDATE message_queue SET status = 'sent' WHERE id = ?", [message.id]);
-            console.log(`✅ Message sent to ${message.recipient}`);
-        } catch (error) {
-            console.error(`❌ Failed to send message to ${message.recipient}`, error);
-            if (message.retries < 3) {
-                await db.query("UPDATE message_queue SET retries = retries + 1 WHERE id = ?", [message.id]);
-            } else {
-                await db.query("UPDATE message_queue SET status = 'failed' WHERE id = ?", [message.id]);
-            }
-        }
-    };
-
-    setInterval(processQueue, randomDelay());
-};
-
 const pingDB = async () => {
     try {
         await db.query('SELECT 1');
@@ -69,4 +36,4 @@ const pingDB = async () => {
     }
 };
 
-module.exports = { storeMessage, getChatHistory, processQueueRandom, pingDB };
+module.exports = { storeMessage, getChatHistory, pingDB };
