@@ -10,6 +10,11 @@ const app = express();
 app.use(express.json());
 
 const BOT_NAME = process.env.BOT_NAME || "KlikBot";
+const WEBSITE_URL = process.env.WEBSITE_URL || "https://digital.klik.in.net";
+const BILLING_URL = process.env.BILLING_URL || "https://digital.klik.in.net/my-account";
+const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || "klik.innovations@gmail.com";
+const DOMAIN = process.env.DOMAIN || "klik.net.my";
+
 const PORT = process.env.PORT || 3001;
 const API_AUTH_TOKEN = process.env.API_AUTH_TOKEN;
 
@@ -36,27 +41,32 @@ client.on('message', async (message) => {
     const { from, body } = message;
     const chatId = from;
     const userMessage = body;
+    const chat = await client.getChatById(chatId);
 
     if (!userMessage.startsWith('!')) {
+        // Send typing status 
+            await chat.sendStateTyping();
+
         switch (userMessage.toLowerCase()) {
             case 'menu':
                 message.reply(`Welcome to ${BOT_NAME}!\n1️⃣ Product Info\n2️⃣ Troubleshooting\n3️⃣ Billing\n4️⃣ Talk to Agent`);
                 break;
             case '1':
-                message.reply("Our services: AI software, animation, e-commerce. More: https://klik.net.my");
+                message.reply(`Our services: AI software, animation, e-commerce. More: ${WEBSITE_URL}`);
                 break;
             case '2':
                 message.reply("Reply:\n- 'login'\n- 'payment'\n- 'technical'");
                 break;
             case '3':
-                message.reply("Billing portal: https://klik.net.my/billing or billing@klik.net.my");
+                message.reply(`Billing portal: ${BILLING_URL}`);
                 break;
             case 'agent':
-                message.reply("Connecting to human agent... or email support@klik.net.my");
+                message.reply(`Connecting to human agent... or email ${SUPPORT_EMAIL}`);
                 break;
             default:
-                const chat = await client.getChatById(chatId);
-                await chat.sendStateTyping();
+                // Send typing status 
+                    await chat.sendStateTyping();
+
                 const history = await getChatHistory(chatId, 5);
                 const aiReply = await generateAIReply(userMessage, history);
                 await storeMessage(from, message.to, userMessage, 'text', 'received', aiReply, '', chatId);

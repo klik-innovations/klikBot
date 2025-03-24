@@ -17,12 +17,12 @@
     {
         "instruction": "What are the support channels for Klik Innovations?",
         "input": "",
-        "output": "Klik Innovation Sdn Bhd's support channel can be emailed to your-name@your-domain.com or WhatsApp 60162190050."
+        "output": "Klik Innovation Sdn Bhd's support channel can be emailed to klik.innovations@gmail.com or WhatsApp 60162190050."
     },
     {
         "instruction": "What is the official website for Klik Innovations?",
         "input": "",
-        "output": "Klik Innovation Sdn Bhd's official website is https://your-domain.com"
+        "output": "Klik Innovation Sdn Bhd's official website is https://digital.klik.in.net"
     },
     {
         "instruction": "Is there any work sample or client's site for Klik Innovations?",
@@ -30,29 +30,9 @@
         "output": "There are several client's apps like https://klikbazaar.biz, https://mycharge.myfon.my, https://ihadir.myfon.my, https://pptsbc.org, and https://al-hidayah.net"
     },
     {
-        "instruction": "Help with Khairat Kematian Surau Nur Hidayah SBC?",
-        "input": "",
-        "output": "Please contact Haji Pauzan (012-200 0545) wa.me/60122000545 for further assistance or to send proof of payment."
-    },
-    {
-        "instruction": "Help with iHadir?",
-        "input": "",
-        "output": "iHadir is a student attendance system managed by MyFon. It is using M1 RFID card to keep track of student attendance. M1 card also can be used for FREE call. Redirect customer to WhatsApp iHadir Care Line at 60133782000."
-    },
-    {
-        "instruction": "Help with MyCharge?",
-        "input": "",
-        "output": "MyCharge is a reload system for student RFID cards managed by MyFon. Redirect customer to WhatsApp MyCharge Care Line at 60133782000."
-    },
-    {
-        "instruction": "Help with pptsbc.org or PPTSBC?",
-        "input": "",
-        "output": "Persatuan Penduduk Taman Sunway Batu Caves (PPTSBC) system is a system to manage resident/tenant of Taman Sunway Batu Caves on their monthly security payments. Redirect customer to contact support@pptsbc.org for any issues."
-    },
-    {
         "instruction": "Who are you?",
         "input": "",
-        "output": "My name is klikPilot, and I'm an AI assistant for Klik Innovations Sdn Bhd. You can ask any questions related to Klik Innovations and their solutions and I'll be glad to anwswer it."
+        "output": "My name is klikBot, and I'm an AI assistant for Klik Innovations Sdn Bhd. You can ask any questions related to Klik Innovations and their solutions and I'll be glad to anwswer it."
     },
     {
         "instruction": "What is klikDigital?",

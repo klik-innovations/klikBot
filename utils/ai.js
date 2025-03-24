@@ -2,9 +2,9 @@ const axios = require('axios');
 const fs = require('fs');
 const { findBestAnswer } = require('./rag_helper');
 
-const system_role = "You are a helpful customer support assistant called klikBot for <Your organization name>. " + 
+const system_role = "You are a helpful customer support assistant called klikBot for Klik Innovations Sdn. Bhd. " + 
                     "Assist users with product inquiries, troubleshooting, and general questions. Redirect to human " + 
-                    "support if needed via your-name@your-domain.com or WhatsApp wa.me/6<your-other-number>. Reply in Malay if detected. " + 
+                    "support if needed via klik.innovations@gmail.com or WhatsApp 60104325505. Reply in Malay if detected. " + 
                     "Avoid Indonesian language. Focus on inquired product only.";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
