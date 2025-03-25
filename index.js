@@ -30,8 +30,36 @@ const db = mysql.createPool({
 // === WhatsApp Client ===
 const client = new Client({
     authStrategy: new LocalAuth(),
-    puppeteer: { args: ['--no-sandbox', '--disable-setuid-sandbox'] }
-});
+    puppeteer: {
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--disable-accelerated-2d-canvas',
+        '--disable-2d-canvas-clip-aa',
+        '--no-first-run',
+        '--no-zygote',
+        '--single-process',
+        '--disable-extensions',
+        '--disable-background-timer-throttling',
+        '--disable-breakpad',
+        '--mute-audio',
+        '--disable-default-apps',
+        '--disable-sync',
+        '--disable-translate',
+        '--metrics-recording-only',
+        '--disable-hang-monitor',
+        '--disable-popup-blocking',
+        '--disable-component-update',
+        '--disable-software-rasterizer',
+        '--use-gl=swiftshader',
+        '--headless=new'
+      ]
+    }
+  });
+  
 
 client.on('qr', qr => qrcode.generate(qr, { small: true }));
 client.on('ready', () => console.log(`✅ ${BOT_NAME} is ready!`));
@@ -208,7 +236,10 @@ setInterval(async () => {
 }, 60000);
 
 // === Start Bot + Server ===
-client.initialize();
+setTimeout(() => {
+    client.initialize();
+}, 5000); // delay by 5s to let system stabilize
+  
 app.listen(PORT, () => {
     console.log(`🚀 Server + Bot running on port ${PORT}`);
 });

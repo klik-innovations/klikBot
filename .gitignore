@@ -2,3 +2,5 @@ node_modules/
 auth/
 package-lock.json
 .env
+push.bat
+INFO
