@@ -9,7 +9,7 @@ const mysql = require('mysql2/promise');
 const app = express();
 app.use(express.json());
 
-const BOT_NAME = process.env.BOT_NAME || "KlikBot";
+const BOT_NAME = process.env.BOT_NAME || "klikBot";
 const WEBSITE_URL = process.env.WEBSITE_URL || "https://digital.klik.in.net";
 const BILLING_URL = process.env.BILLING_URL || "https://digital.klik.in.net/my-account";
 const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || "klik.innovations@gmail.com";
