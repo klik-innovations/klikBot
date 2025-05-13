@@ -1,6 +1,6 @@
-# 📦 KlikBot Complete Setup & Deployment Guide
+# 📦 klikBot Complete Setup & Deployment Guide
 
-Welcome to the KlikBot project! This guide will help you set up, run, and deploy the KlikBot WhatsApp bot on your local machine or cloud VM.
+Welcome to the klikBot project! This guide will help you set up, run, and deploy the klikBot WhatsApp bot on your local machine or cloud VM.
 
 ---
 
@@ -35,7 +35,7 @@ nano .env
 ```
 Paste:
 ```env
-BOT_NAME=KlikBot
+BOT_NAME=klikBot
 WEBSITE_URL=https://yourdomain.com
 BILLING_URL=https://yourdomain.com/billing
 SUPPORT_EMAIL=support@yourdomain.com
@@ -88,7 +88,7 @@ FLUSH PRIVILEGES;
 
 ---
 
-## 🚀 5. Run KlikBot Locally
+## 🚀 5. Run klikBot code to test for any errors
 
 ```bash
 node index.js
@@ -175,7 +175,7 @@ sudo certbot --nginx -d klikbot.yourdomain.com
 git init
 git remote add origin https://github.com/klik-innovations/klikBot.git
 git add .
-git commit -m "Initial push of KlikBot"
+git commit -m "Initial push of klikBot"
 git branch -M main
 git push -u origin main
 ```
@@ -189,6 +189,7 @@ pm2 start index.js --name klikBot
 pm2 save
 pm2 startup systemd
 ```
+Then follow the instruction printed from the pm2 startup systemd command.
 
 ---
 
@@ -201,3 +202,167 @@ Map your public VM IP to a domain like `klikbot.mozobot.com` using FreeDNS.afrai
 ```bash
 https://klikbot.yourdomain.com/status
 ```
+
+
+## Auto-Cleanup and send disk usage alert if above threshold:
+
+1. Create deep_clean.sh in your home folder (eg: /home/klikBot) file with the following content:
+
+```bash
+#!/bin/bash
+LOGFILE="/var/log/klikbot-cleanup.log"
+THRESHOLD=90
+TARGET_NUMBER="601xxxxxxxxx"                            #change to your WhatsApp number (other than the one used by your bot)
+AUTH_TOKEN="6b9afc8cb4358fc576bcc88a82e083xxxxxxxxxx"   #change to your bot token
+API_URL="https://yourbot.mozobot.com/api/send-message"  #use your own domain
+ALERT_MESSAGE="🚨 ALERT: klikBot VM disk usage has exceeded ${THRESHOLD}%. Immediate cleanup is recommended."
+
+echo "[START] Cleanup started at $(date)" | tee -a $LOGFILE
+
+# 1. Clean PM2 logs (user and root)
+rm -rf /home/*/.pm2/logs/*.log /root/.pm2/logs/*.log 2>/dev/null
+echo "✔️ PM2 logs cleared" | tee -a $LOGFILE
+
+# 2. Clean NPM cache
+npm cache clean --force 2>/dev/null
+rm -rf /home/*/.npm 2>/dev/null
+echo "✔️ NPM cache cleaned" | tee -a $LOGFILE
+
+# 3. Clean /var/log
+sudo journalctl --vacuum-time=1d
+sudo truncate -s 0 /var/log/syslog /var/log/kern.log /var/log/auth.log 2>/dev/null
+echo "✔️ System logs truncated" | tee -a $LOGFILE
+
+# 4. Clean Snap cache and remove old revisions
+rm -rf /var/lib/snapd/cache/*
+snap list --all | awk '/disabled/ {print $1, $2}' | while read snapname revision; do
+  echo "🧽 Removing $snapname revision $revision..." | tee -a $LOGFILE
+  snap remove "$snapname" --revision="$revision" 2>/dev/null || echo "⚠️ Skipped: $snapname $revision" | tee -a $LOGFILE
+done
+echo "✔️ Snap junk removed" | tee -a $LOGFILE
+
+# 5. Skip cleaning .wwebjs_auth and Chromium binaries intentionally
+echo "✔️ Preserved Chromium and session folders" | tee -a $LOGFILE
+
+# 6. Check disk usage
+USAGE=$(df / | grep / | awk '{ print $5 }' | sed 's/%//g')
+if [ "$USAGE" -ge "$THRESHOLD" ]; then
+  echo "⚠️ Disk usage is at ${USAGE}% — sending WhatsApp alert..." | tee -a $LOGFILE
+  curl -s -X POST "$API_URL" \
+    -H "Authorization: Bearer $AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d "{\"number\":\"$TARGET_NUMBER\",\"message\":\"$ALERT_MESSAGE\"}" >> $LOGFILE
+else
+  echo "✅ Disk usage is safe at ${USAGE}%." | tee -a $LOGFILE
+fi
+
+echo "[DONE] Cleanup finished at $(date)" | tee -a $LOGFILE
+```
+
+2. Make it executable:
+```bash
+chmod +x ~/deep_clean.sh
+```
+
+3. Run it to test:
+```bash
+sudo ~/deep_clean.sh
+```
+
+4. View the log:
+```bash
+cat /var/log/klikbot-cleanup.log
+```
+
+5. Edit the cron job file:
+```bash
+sudo crontab -e
+```
+
+6. Add the following line:
+```bash
+0 3 * * 0 /home/klikBot/deep_clean.sh
+```
+
+
+## CPU alert if above threshold and reboot if necessary:
+cpu_alert.sh: WhatsApp Alert if CPU ≥ 90%
+reboot_if_high_memory.sh: Auto Reboot if Memory Usage ≥ 90%
+
+1. Create cpu_alert.sh file in your home folder (eg: /home/klikBot) file with the following content:
+
+```bash
+#!/bin/bash
+THRESHOLD=90
+USAGE=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8}' | cut -d'.' -f1)
+TARGET="601xxxxxxxx"                                        #change to your WhatsApp number (other than the one used by your bot)
+AUTH_TOKEN="6b9afc8cb4358fc576bcc88a82e083xxxxxxxxxx"       #change to your bot token
+API_URL="https://yourbot.mozobot.com/api/send-message"      #use your own domain
+MESSAGE="🚨 ALERT: klikBot VM CPU usage is at ${USAGE}%. Investigate immediately!"
+
+if [ "$USAGE" -ge "$THRESHOLD" ]; then
+  curl -s -X POST "$API_URL" \
+    -H "Authorization: Bearer $AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d "{\"number\":\"$TARGET\",\"message\":\"$MESSAGE\"}"
+fi
+```
+
+2. Create reboot_if_high_memory.sh file in your home folder (eg: /home/klikBot) file with the following content:
+
+```bash
+#!/bin/bash
+LIMIT=90
+USED=$(free | awk '/Mem:/ { printf("%.0f\n", $3/$2 * 100) }')
+
+if [ "$USED" -ge "$LIMIT" ]; then
+  echo "🧠 Memory usage is at ${USED}%. Rebooting..."
+  /sbin/shutdown -r now "High memory usage – triggered auto reboot"
+fi
+```
+
+3. Make it executable:
+```bash
+chmod +x ~/cpu_alert.sh ~/reboot_if_high_memory.sh
+```
+
+3. Run it to test:
+```bash
+sudo ~/cpu_alert.sh
+sudo ~/reboot_if_high_memory.sh
+```
+
+4. Edit the cron job file:
+```bash
+sudo crontab -e
+```
+
+6. Add the following lines:
+```bash
+*/30 * * * * /home/klikBot/cpu_alert.sh
+*/15 * * * * /home/klikBot/reboot_if_high_memory.sh
+```
+
+
+## Configure logrotate:
+
+1. Create this file:
+```bash
+sudo nano /etc/logrotate.d/klikbot
+```
+
+2. Insert the following content:
+```bash
+/var/log/klikbot-cleanup.log {
+    weekly
+    rotate 4
+    compress
+    missingok
+    notifempty
+    create 644 root root
+}
+```
+
+It will automatically compresses and rotates cleanup logs weekly, keeping the last 4.
+
+
